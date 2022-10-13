@@ -1,0 +1,62 @@
+
+import random
+import tensorflow as tf
+import tkinter as tk
+import os
+from tensorflow import keras
+from tensorflow.keras.preprocessing.image import ImageDataGenerator #type: ignore
+import PIL
+import numpy as np
+from tkinter import *
+from PIL import Image, ImageTk
+
+def tensor_to_image(tensor):
+    tensor = tensor*255
+    tensor = np.array(tensor, dtype=np.uint8)
+    if np.ndim(tensor)>3:
+        assert tensor.shape[0] == 1
+        tensor = tensor[0]
+    return PIL.Image.fromarray(tensor)
+batch_size = 128
+IMG_HEIGHT = 150
+IMG_WIDTH = 150
+PATH =  'cats_and_dogs\cats_and_dogs'
+test_dir = os.path.join(PATH,'test')
+test_image_generator = ImageDataGenerator(rescale=1./255)
+test_data_gen = test_image_generator.flow_from_directory(test_dir, target_size=(IMG_HEIGHT, IMG_WIDTH),
+                                                         classes ='.',
+                                                         class_mode='categorical', 
+                                                         batch_size=batch_size,
+                                                         shuffle = False)
+model = keras.models.load_model('CatDog.h5')
+def plot():
+    a = random.randint(0,49)
+    phot =  tensor_to_image(test_data_gen[0][0][a])    
+    photo = PIL.ImageTk.PhotoImage(phot)
+    l = Label(window,image=photo)
+    l.image = photo
+    l.grid(column=1, row=0)
+    b = test_data_gen[0][0][a]
+
+    b = tf.expand_dims(b, axis = 0)
+    b = model.predict(b)
+    print(b)
+    b = b[0][0]
+    print(b)
+
+    if b > 0.5:
+        textlabel['text'] = 'Its Probably a dog like:',round(float(b*100),2) ,"%","a dog"
+    else:
+        textlabel['text'] = 'Its Probably a cat like:',round(float((1-b)*100),2) , "%","a cat"
+    window.update()
+
+
+window = tk.Tk()
+window.geometry('500x300')
+window.title('Cat or Dog')
+
+
+Randombutton = Button(window,command= plot, height=5,width=10, text = "Generate").grid(column=0, row=0)
+textlabel = Label(window)
+textlabel.grid(column = 1, row = 1)
+window.mainloop()
