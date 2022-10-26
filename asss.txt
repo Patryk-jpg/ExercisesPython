@@ -1,0 +1,13 @@
+select concat(imie,' ', nazwisko, ' kwota wynagrodzenia ',wynagrodzenie) as 'dane osób' from pracownicy;
+select concat(imie,' ', substring(nazwisko,1,1), '. ', tytul) as 'autorzy ksiazek' from ksiazki;
+select * from ksiazki;
+select concat(Tytul,' zostala napisana przez autora ', imie, ' ',nazwisko)as 'Dane ksiazek i autorow' from ksiazki;
+
+select upper(imie), upper(nazwisko) from pracownicy;
+select concat(substring(imie,1,1),'. ', nazwisko, ' ', tytul) as 'ksiazki' from ksiazki;
+select concat(imie, ' ',nazwisko) as 'osoba',concat(day(Data_zatrudnienia),' ',monthname(Data_zatrudnienia), ' ', year(Data_zatrudnienia)) as 'data' from pracownicy;
+select lower(reverse(imie))as 'reversedimie' from pracownicy;
+select nazwa, concat(length(nazwa), ' Liter') as 'dlugosc' from stanowiska;
+select ceil(30-2.45), floor(122.23 + 33.4*4);
+select 2+sqrt(abs(3.75-33)*pow(2,3))/(44/11-12.5);
+select Nr_transakcji, datediff(Data_zwrotu,Data_wypozyczenia) as 'ilosc dni' from wypozyczenia;
