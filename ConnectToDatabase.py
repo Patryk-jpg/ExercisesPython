@@ -7,10 +7,10 @@ dataBase = mysql.connector.connect(
   host ="localhost",
   user ="root",
   password = '',
-  database = 'testing'
+  database = 'pythonlogin'
 )
-
 cursor = dataBase.cursor()
+
 cursor.execute("CREATE TABLE IF NOT EXISTS dane(id_dane integer primary key AUTO_INCREMENT,login VARCHAR(10), passwd VARCHAR(15))")
 cursor.execute("CREATE TABLE IF NOT EXISTS kontakt(id_kontakt integer primary key AUTO_INCREMENT,id_dane integer unique, imie VARCHAR(10), nazwisko VARCHAR(15),ulica varchar(10),Mieszkanie	varchar(10),Kod_i_miasto varchar(10),nr_telefonu varchar(15),email varchar(20),wiek	int(3))")
 dataBase.commit()
@@ -36,7 +36,7 @@ def RegisterData():
         Label = tk.Label(app,text = "Hasła nie zgadzają się ze sobą spróbuj ponownie")
         Label.pack()   
         return
-    if len(powtorkahasla) < 5:
+    if len(powtorkahasla) < 8:
         passwdCheck.set('')
         passwddata.set('')
         Label = tk.Label(app,text = "Hasło musi mieć co najmniej 8 znaków!")
@@ -63,7 +63,7 @@ def FormularzDoRejestracji():
     login.pack()
     passwd.pack()
     passwd_check.pack()
-    wyslijRejestracje = tk.Button(app, text = 'Send', command=RegisterData)
+    wyslijRejestracje = tk.Button(app, text = 'Wyślij', command=RegisterData)
     wyslijRejestracje.pack()
 def zalogujsie():
     query = f"SELECT id_dane,login,passwd FROM dane WHERE login = '{logowanie_login_data.get()}' and passwd = '{logowanie_login_passwd.get()}';"
@@ -89,7 +89,7 @@ def FormularzDoLogowania():
     logowanie_haslo = tk.Entry(app ,textvariable= logowanie_login_passwd)
     #haslo_text  = tk.Label(app, text = 'haslo').place(x = 50, y = 10)
     logowanie_login_passwd.set('haslo')
-    zaloguj = tk.Button(app,text= 'Send' , command = zalogujsie)
+    zaloguj = tk.Button(app,text= 'Wyślij' , command = zalogujsie)
     
     logowanie_login.pack()
     logowanie_haslo.pack()
@@ -107,7 +107,7 @@ def loggedin(myresult):
     temp = ['skip', 'twoje id', 'imie', 'nazwisko','ulica','mieszkanie','kod i miasto', 'numer telefonu','email','wiek']
     c = 0
     data = cursor.fetchall()
-    print(data)
+
     entry_list = []
     for i in data[0]: 
         if c == 0:
@@ -154,7 +154,7 @@ Signin.place(x = 10 , y = 0)
 
 
 
-print(dataBase)
+
 
 logindata = StringVar()
 passwddata= StringVar()
